@@ -1,0 +1,5 @@
+Triangle: perimeter=54, area=98.5900603509299
+Rectangle: perimeter=56, area=147
+Trapeze: perimeter=54, area=98.5900603509299
+Parallelogram: perimeter = 76, area = 304.0
+Circle: length = 50.26548245743669, area = 201.06192982974676
