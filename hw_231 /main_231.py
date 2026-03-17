@@ -10,7 +10,7 @@ class Flower:
 
     def draw(self, n):
         for i in range(1, n + 1):
-            pos = self.stem.paint_stem(n, i)
+            pos = self.stem.paint_stem(i)
             self.petals.paint_petal()
             self.leaf.paint_leaf(pos)
 class Stem:
