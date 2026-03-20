@@ -29,7 +29,7 @@ class Rectangle:
 
 class Trapeze:
     def __init__ (self, a, b, c, d):
-        assert int(a) > 0 and int(b) > 0 and int(c) > 0 and int(d) > 0 and (int(d)-int(a) < int(b) + int(c))
+        assert int(a) > 0 and int(b) > 0 and int(c) > 0 and int(d) > 0 and abs(int(c)-int(d)) < abs(int(a)-int(b)) < int(c) + int(d)
         self.a = int(a)
         self.b = int(b)
         self.c = int(c)
@@ -37,10 +37,9 @@ class Trapeze:
     def perimeter(self):
         return self.a + self.b + self.c + self.d
     def area(self):
-        p = (self.a + self.b + self.c + self.d)/2
-        assert (p-self.c)*(p-self.d)*(p-self.b)*(p-self.b-self.d) > 0
-        ar = ((self.a+self.b)/4*(self.a-self.b))*((p-self.c)*(p-self.d)*(p-self.b)*(p-self.b-self.d))**0.5
-        return ar
+        x  = ((self.c**2 - self.d**2) + (self.b - self.a)**2) / (2*(self.b-self.a))
+        h = (self.c**2 - x**2)**0.5
+        return ((self.a+self.b)/2)*h
     def __str__(self):
         return f"Trapeze = {self.a, self.b, self.c, self.d}, perimeter = {self.perimeter()}, area = {self.area()}\n"
 
