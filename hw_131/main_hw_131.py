@@ -29,7 +29,7 @@ class Rectangle:
 
 class Trapeze:
     def __init__ (self, a, b, c, d):
-        assert int(a) > 0 and int(b) > 0 and int(c) > 0 and int(d) > 0
+        assert int(a) > 0 and int(b) > 0 and int(c) > 0 and int(d) > 0 and (int(d)-int(a) < int(b) + int(c))
         self.a = int(a)
         self.b = int(b)
         self.c = int(c)
@@ -46,7 +46,7 @@ class Trapeze:
 
 class Parallelogram:
     def __init__ (self, a, b, h):
-        assert int(a) > 0 and b > 0 and h > 0
+        assert int(a) > 0 and int(b) > 0 and int(h) > 0 and (int(a) > int(h) or int(b) > int(h))
         self.a = int(a)
         self.b = int(b)
         self.h = int(h)
@@ -60,6 +60,7 @@ class Parallelogram:
 
 class Circle:
     def __init__ (self, r):
+        assert r > 0
         self.r = int(r)
     def perimeter(self):
         return 2*pi*self.r
