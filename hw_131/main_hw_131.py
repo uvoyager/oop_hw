@@ -52,7 +52,7 @@ class Parallelogram:
     def perimeter(self):
         return (self.a +self.b)*2
     def area(self):
-        return (self.a + self.b)/2 * self.h
+        return self.a * self.h
     def __str__(self):
         return f"Parallelogram = {self.a, self.b, self.h}, perimeter = {self.perimeter()}, area = {self.area()}\n"
 
