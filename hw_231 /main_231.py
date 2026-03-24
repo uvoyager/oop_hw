@@ -89,7 +89,4 @@ col = input("Input the color of the flower: ")
 fl = Flower(n, k, col)
 fl.draw_fl()
 
-turtle.Screen().exitonclick()t the number: '))
-a = Flower()
-a.draw(n)
 turtle.Screen().exitonclick()
