@@ -1,3 +1,0 @@
-RectangularParallelepiped = (10, 24, 14), volume = 3360
-RectangularParallelepiped = (24, 23, 21), volume = 11592
-RectangularParallelepiped = (21, 23, 22), volume = 10626
