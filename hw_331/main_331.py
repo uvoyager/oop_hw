@@ -134,7 +134,7 @@ class Ball(Circle, ThreeDim):
     def height(self):
         return 2*self._r
     def volume(self):
-        return 4/3*pi*self._r^3
+        return 4/3*pi*self._r**3
     def __str__(self):
         return f"Ball = {self._r}, volume = {self.volume()}\n"
 
