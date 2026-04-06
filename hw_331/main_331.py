@@ -1,46 +1,53 @@
 from math import pi, sqrt
-class Figure:
-    def perimeter(self):
-        raise NotImplementedError()
-    def square(self):
-        raise NotImplementedError()
-    def squareSurface(self):
-        raise NotImplementedError()
-    def squareBase(self):
-        raise NotImplementedError()
-    def height(self):
-        raise NotImplementedError()
-    def volume(self):
-        raise NotImplementedError()
-#ADD FORMULAS
-class TwoDim(Figure):
-    def perimeter(self):
-        return "some formula for a perimeter"
-    def square(self):
-        return "some formula for an area"
-    def squareSurface(self):
-        return None
-    def squareBase(self):
-        return None
-    def height(self):
-        return None
-    def volume(self):
-        return  "some formula for an area"
 
+class Figure:
+    def dimention(self):
+        raise NotImplementedError()
+    def perimeter(self):
+        raise NotImplementedError()
+    def square(self):
+        raise NotImplementedError()
+    def squareSurface(self):
+        raise NotImplementedError()
+    def squareBase(self):
+        raise NotImplementedError()
+    def height(self):
+        raise NotImplementedError()
+    def volume(self):
+        raise NotImplementedError()
+
+class TwoDim(Figure):
+    def dimention(self):
+        return 2
+    def perimeter(self):
+        raise NotImplementedError()
+    def square(self):
+        raise NotImplementedError()
+    def squareSurface(self):
+        return None
+    def squareBase(self):
+        return None
+    def height(self):
+        return None
+    def volume(self):
+        return self.square()
 
 class ThreeDim(Figure):
+    def dimention(self):
+        return 3
     def perimeter(self):
         return None
     def square(self):
         return None
     def squareSurface(self):
-        return "some formula for a surface area"
+        raise NotImplementedError()
     def squareBase(self):
-        return "some formula for a base area"
+        raise NotImplementedError()
     def height(self):
-        return "some formula for a height"
+        raise NotImplementedError()
     def volume(self):
-        return "some formula for a volume"
+        raise NotImplementedError()
+
 
 class Triangle(TwoDim):
     def __init__(self, a, b, c):
@@ -49,51 +56,54 @@ class Triangle(TwoDim):
         self._a = a
         self._b = b
         self._c = c
+
     def perimeter(self):
         return self._a + self._b + self._c
+
     def square(self):
-        p = (self._a + self._b + self._c)/2
-        return (p*(p-self._a)*(p-self._b)*(p-self._c))**0.5
-    def volume(self):
         p = (self._a + self._b + self._c) / 2
         return (p * (p - self._a) * (p - self._b) * (p - self._c)) ** 0.5
+
     def __str__(self):
         return f"Triangle = {self._a, self._b, self._c}, volume = {self.volume()}\n"
+
 
 class Rectangle(TwoDim):
     def __init__(self, a, b):
         assert int(a) > 0 and int(b) > 0
         self._a = a
         self._b = b
+
     def perimeter(self):
-        return (self._a + self._b)*2
+        return (self._a + self._b) * 2
+
     def square(self):
-        return self._a*self._b
-    def volume(self):
-        return self._a*self._b
+        return self._a * self._b
+
     def __str__(self):
         return f"Rectangle = {self._a, self._b}, volume={self.volume()}\n"
 
+
 class Trapeze(TwoDim):
-    def __init__(self, a,b,c,d):
+    def __init__(self, a, b, c, d):
         assert int(a) > 0 and int(b) > 0 and int(c) > 0 and int(d) > 0 and abs(int(c) - int(d)) < abs(
             int(a) - int(b)) < int(c) + int(d)
         self._a = a
         self._b = b
         self._c = c
         self._d = d
+
     def perimeter(self):
-        return self._a+self._b+self._c+self._d
+        return self._a + self._b + self._c + self._d
+
     def square(self):
         x = ((self._c ** 2 - self._d ** 2) + (self._b - self._a) ** 2) / (2 * (self._b - self._a))
         h = (self._c ** 2 - x ** 2) ** 0.5
         return ((self._a + self._b) / 2) * h
-    def volume(self):
-        x = ((self._c ** 2 - self._d ** 2) + (self._b - self._a) ** 2) / (2 * (self._b - self._a))
-        h = (self._c ** 2 - x ** 2) ** 0.5
-        return ((self._a + self._b) / 2) * h
+
     def __str__(self):
         return f"Trapeze = {self._a, self._b, self._c, self._c}, volume={self.volume()}\n"
+
 
 class Parallelogram(TwoDim):
     def __init__(self, a, b, h):
@@ -101,126 +111,175 @@ class Parallelogram(TwoDim):
         self._a = a
         self._b = b
         self._h = h
+
     def perimeter(self):
-        return (self._a + self._b)*2
+        return (self._a + self._b) * 2
+
     def square(self):
         return self._a * self._h
-    def volume(self):
-        return self._a * self._h
+
     def __str__(self):
         return f"Parallelogram = {self._a, self._b, self._h}, volume = {self.volume()}\n"
+
 
 class Circle(TwoDim):
     def __init__(self, r):
         assert r > 0
         self._r = r
+
     def perimeter(self):
-        return 2*pi*self._r
+        return 2 * pi * self._r
+
     def square(self):
-        return pi*self._r**2
-    def volume(self):
         return pi * self._r ** 2
+
     def __str__(self):
         return f"Circle = {self._r}, volume = {self.volume()}\n"
 
-class Ball(Circle, ThreeDim):
+
+class Ball(ThreeDim):
     def __init__(self, r):
-        super().__init__(r)
+        assert r > 0
         self._r = r
+
     def squareSurface(self):
-        return 4*pi*self._r^2
+        return 4 * pi * self._r ** 2
+
     def squareBase(self):
-        return pi*self._r^2
+        return None
+
     def height(self):
-        return 2*self._r
+        return None
+
     def volume(self):
-        return 4/3*pi*self._r**3
+        return self._r**3 * (4/3)*pi
+
     def __str__(self):
         return f"Ball = {self._r}, volume = {self.volume()}\n"
 
-class TriangularPyramid(Triangle, ThreeDim):
+
+class TriangularPyramid(ThreeDim):
     def __init__(self, a, h):
-        super().__init__(a, a, a)
-        assert int(h)>0
+        assert int(h) > 0 and int(a) > 0
         self._h = h
+        self._a = a
+        self._base = Triangle(self._a, self._a, self._a)
+
     def squareSurface(self):
-        sb = super().square()
-        l = sqrt(self._h^2 + (1/9)*(self._a^2 - (self._a^2)/4))
-        return sb + (3/2)*l*self._a
+        sb = self._base.square()
+        l = sqrt(self._h ** 2 + (1 / 9) * (self._a ** 2 - (self._a ** 2) / 4))
+        return sb + (3 / 2) * l * self._a
+
     def squareBase(self):
-        return super().square()
+        return self._base.square()
+
     def height(self):
         return self._h
+
     def volume(self):
-        return (self._h*super().square())/3
+        return (self._h * self._base.square()) / 3
+
     def __str__(self):
         return f"TriangularPyramid = {self._a, self._h}, volume = {self.volume()}\n"
 
-class QuadrangularPyramid(Rectangle, ThreeDim):
+
+class QuadrangularPyramid(ThreeDim):
     def __init__(self, a, b, h):
-        super().__init__(a, b)
-        assert int(h)>0
+        assert int(h) > 0 and int(a) > 0 and int(b) > 0
         self._h = h
+        self._a = a
+        self._b = b
+        self._base = Rectangle(self._a, self._b)
+
     def squareSurface(self):
-        sb = super().square()
-        l = sqrt(self._h^2 - (self._a^2)/4)
-        return sb + l*self._a + l*self._b
+        sb = self._base.square()
+        l = sqrt(self._h ** 2 - (self._a ** 2) / 4)
+        return sb + l * self._a + l * self._b
+
     def squareBase(self):
-        return super().square()
+        return self._base.square()
+
     def height(self):
         return self._h
+
     def volume(self):
-        return (super().square()*self._h)/3
+        return (self._base.square() * self._h) / 3
+
     def __str__(self):
         return f"QuadrangularPyramid = {self._a, self._b, self._h}, volume = {self.volume()}\n"
 
-class RectangularParallelepiped(Rectangle, ThreeDim):
+
+class RectangularParallelepiped(ThreeDim):
     def __init__(self, a, b, c):
-        super().__init__(a, b)
-        assert int(c)>0
+        assert int(c) > 0 and int(a) > 0 and int(b) > 0
+        self._a = a
+        self._b = b
         self._c = c
+        self._base = Rectangle(self._a, self._b)
+
     def squareSurface(self):
-        return 2*(self._a*self._b + self._a*self._c + self._b*self._c)
+        return 2 * (self._a * self._b + self._a * self._c + self._b * self._c)
+
     def squareBase(self):
-        return self._a*self._b
+        return self._base.square()
+
     def height(self):
         return self._c
+
     def volume(self):
-        return self._a*self._b*self._c
+        return self._a * self._b * self._c
+
     def __str__(self):
         return f"RectangularParallelepiped = {self._a, self._b, self._c}, volume = {self.volume()}\n"
 
-class Cone(Circle, ThreeDim):
+
+class Cone(ThreeDim):
     def __init__(self, r, h):
-        assert int(h)>0
-        super().__init__(r)
+        assert int(h) > 0 and int(r) > 0
         self._h = h
+        self._r = r
+        self._base = Circle(self._r)
+
     def squareSurface(self):
-        return pi*self._r*()*sqrt(self._h^2+self._r^2)
+        return pi * self._r *(self._r + sqrt(self._h ** 2 + self._r ** 2))
+
     def squareBase(self):
-        return super().square()
+        return self._base.square()
+
     def height(self):
         return self._h
+
     def volume(self):
-        return (self._r^2)*self._h/3*pi
+        return (self._r ** 2) * self._h / 3 * pi
+
     def __str__(self):
         return f"Cone = {self._r, self._h}, volume = {self.volume()}\n"
 
-class TriangularPrism(Triangle, ThreeDim):
+
+class TriangularPrism(ThreeDim):
     def __init__(self, a, b, c, h):
-        super().__init__(a, b, c)
-        assert int(h)>0
+        assert int(h) > 0 and int(a) > 0 and int(b) > 0 and int(c) > 0
         self._h = h
+        self._a = a
+        self._b = b
+        self._c = c
+        self._base = Triangle(self._a, self._b, self._c)
+
     def squareSurface(self):
-        return 2*super().square()+ self._a*self._h + self._b*self._h + self._c*self._h
+        return 2 * self._base.square() + self._a * self._h + self._b * self._h + self._c * self._h
+
     def squareBase(self):
-        return super().square()
+        return self._base.square()
+
     def height(self):
         return self._h
+
     def volume(self):
-        return super().square()*self._h
+        return self._base.square() * self._h
+
     def __str__(self):
         return f"TriangularPrism = {self._a, self._b, self._c, self._h}, volume = {self.volume()}\n"
+
 
 fs = ["input01.txt", "input02.txt", "input03.txt"]
 res = []
@@ -266,7 +325,7 @@ for f in fs:
             if word[0] == "Circle":
                 r = int(word[1])
                 try:
-                    c  =Circle(r)
+                    c = Circle(r)
                     figures.append(c)
                 except AssertionError:
                     pass
@@ -330,7 +389,7 @@ for f in fs:
             figure = i
     res.append(figure)
 
-with open("output.txt", "w")as g:
+with open("output.txt", "w") as g:
     g.write(str(res[0]))
     g.write(str(res[1]))
     g.write(str(res[2]))
