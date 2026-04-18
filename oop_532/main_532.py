@@ -31,7 +31,7 @@ class Rational():
             return self+Rational(other, 1)
         raise NotImplementedError
     def __str__(self):
-        return f"{self.num}/{self.den}"
+        return f"{self.num}/{self.den}\n"
 
 class RationalList():
     def __init__(self):
@@ -66,6 +66,7 @@ class RationalList():
         return self
 
 data = ['input01.txt', 'input02.txt', 'input03.txt']     # the data files
+resList = []
 result = Rational(0, 1)
 for file in data:
     with open (file, 'r') as f:
@@ -90,4 +91,10 @@ for file in data:
                     continue
             if len(ints) == 1:
                 result = result + Rational(ints[0], 1)
-        print(result)
+        resList.append(result)
+
+with open ("output.txt", 'w') as o:
+    o.write(str(resList[0]))
+    o.write(str(resList[1]))
+    o.write(str(resList[2]))
+    
