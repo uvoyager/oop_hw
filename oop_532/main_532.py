@@ -67,12 +67,12 @@ class RationalList():
 
 data = ['input01.txt', 'input02.txt', 'input03.txt']     # the data files
 resList = []
-result = Rational(0, 1)
+
 for file in data:
+    result = Rational(0, 1)
     with open (file, 'r') as f:
         for line in f:
             n = line.strip().split()
-            ints = []
             for numbers in n:
                 if '/' in numbers:
                     try:
@@ -80,17 +80,12 @@ for file in data:
                         result = result+Rational(num, den)
                     except AssertionError:
                         continue
-                else:
-                    ints.append(int(numbers))
-            while len(ints)>=2:
-                num = ints.pop(0)
-                den = ints.pop(0)
-                try:
-                    result = result + Rational(num, den)
-                except AssertionError:
-                    continue
-            if len(ints) == 1:
-                result = result + Rational(ints[0], 1)
+                elif '/' not in numbers:
+                    try:
+                        num = int(numbers)
+                        result += Rational(num, 1)
+                    except AssertionError:
+                        continue
         resList.append(result)
 
 with open ("output.txt", 'w') as o:
