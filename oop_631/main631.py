@@ -29,7 +29,7 @@ class Rational():
             return Rational(num, den)
         elif isinstance(other, int):
             return self+Rational(other, 1)
-        raise NotImplementedError
+        return NotImplemented
     def __str__(self):
         return f"{self.num}/{self.den}"
 
@@ -37,12 +37,18 @@ class RationalList():
     def __init__(self):
         self.l = []
     def add_to_list(self, r):
-        if not isinstance(r, Rational):
+        if isinstance(r, int):
+            r = Rational(r, 1)
+        elif not isinstance(r, Rational):
             raise TypeError
         self.l.append(r)
     def __getitem__(self, i):
         return self.l[i]
     def __setitem__(self, i, value):
+        if isinstance(value, int):
+            value = Rational(value, 1)
+        elif not isinstance(value, Rational):
+            raise TypeError
         self.l[i] = value
     def __len__(self):
         return len(self.l)
@@ -56,7 +62,7 @@ class RationalList():
         elif isinstance(other, int):
             res.l.append(Rational(other, 1))
         else:
-            raise NotImplementedError
+            return NotImplemented
         return res
     def __iadd__(self, other):
         if isinstance(other, RationalList):
@@ -66,18 +72,11 @@ class RationalList():
         elif isinstance(other, int):
             self.l.append(Rational(other, 1))
         else:
-            raise NotImplementedError
+            raise TypeError
         return self
     def __iter__(self):
-        self._sorted = sorted(self.l, key=lambda r: (-r.den, -r.num))
-        self._index = 0
-        return self
-    def __next__(self):
-        if self._index >= len(self._sorted):
-            raise StopIteration
-        value = self._sorted[self._index]
-        self._index += 1
-        return value
+        for r in sorted(self.l, key=lambda r: (-r.den, -r.num)):
+            yield r
     def __str__(self):
         return str(self.l)
 
