@@ -1,0 +1,129 @@
+class Rational():
+    def __init__(self, num, den):           # forming of the fraction
+        if den == 0:
+            raise RationalError('The denominator is ZERO. We cannot divide by zero.', 1, (num, den),  None)
+        self.num = int(num)
+        self.den = int(den)
+        self.check()
+
+    def nsd(self):  # checking the gcd of the numerator and denominator
+        a = abs(self.num)
+        b = abs(self.den)
+        if b > a:
+            a, b = b, a
+        while b != 0:
+            t = b
+            b = a % b
+            a = t
+        return a
+
+    def check(self):  # the final fraction must be formed here
+        if self.nsd() != 1:
+            gcd = self.nsd()
+            self.num = self.num // gcd
+            self.den = self.den // gcd
+        if self.den < 0:
+            self.num *= -1
+            self.den *= -1
+
+    def __add__(self, other):
+        if isinstance(other, Rational):
+            num = self.num * other.den + self.den * other.num
+            den = self.den * other.den
+            return Rational(num, den)
+        elif isinstance(other, int):
+            return self + Rational(other, 1)
+        return NotImplemented
+
+    def __str__(self):
+        return f"{self.num}/{self.den}"
+
+
+class RationalList():
+    def __init__(self):
+        self.l = []
+
+    def add_to_list(self, r):
+        if isinstance(r, int):
+            r = Rational(r, 1)
+        elif not isinstance(r, Rational):
+            raise TypeError
+        self.l.append(r)
+
+    def __getitem__(self, i):
+        return self.l[i]
+
+    def __setitem__(self, i, value):
+        if isinstance(value, int):
+            value = Rational(value, 1)
+        elif not isinstance(value, Rational):
+            raise TypeError
+        self.l[i] = value
+
+    def __len__(self):
+        return len(self.l)
+
+    def __add__(self, other):
+        res = RationalList()
+        res.l = self.l.copy()
+        if isinstance(other, RationalList):
+            res.l.extend(other.l)
+        elif isinstance(other, Rational):
+            res.l.append(other)
+        elif isinstance(other, int):
+            res.l.append(Rational(other, 1))
+        else:
+            return NotImplemented
+        return res
+
+    def __iadd__(self, other):
+        if isinstance(other, RationalList):
+            self.l.extend(other.l)
+        elif isinstance(other, Rational):
+            self.l.append(other)
+        elif isinstance(other, int):
+            self.l.append(Rational(other, 1))
+        else:
+            raise TypeError
+        return self
+
+    def __iter__(self):
+        for r in sorted(self.l, key=lambda r: (-r.den, -r.num)):
+            yield r
+
+    def __str__(self):
+        return str(self.l)
+
+class RationalError(ZeroDivisionError):
+    def __init__(self, message, err_code, or_value, conv_value):
+        super().__init__(message)
+        self.message = message
+        self.err_code = err_code
+        self.or_value = or_value
+        self.conv_value = conv_value
+    def __str__(self):
+        return f'Error: {self.err_code}'
+
+
+data = ['input01.txt', 'input02.txt', 'input03.txt']  # the data files
+rList = RationalList()
+resultList = []
+for file in data:
+    result = Rational(0, 1)
+    with open(file, 'r') as f:
+        for line in f:
+            n = line.strip().split()
+            for numbers in n:
+                if '/' in numbers:
+                    num, den = map(int, numbers.split('/'))
+                    try:
+                        rList.add_to_list(Rational(num, den))
+                    except RationalError as rr:
+                        print(rr)
+                elif '/' not in numbers:
+                    num = int(numbers)
+                    rList.add_to_list(Rational(num, 1))
+
+with open('output.txt', 'w') as g:
+    for i in rList:
+        g.write(str(i) + '  ')
